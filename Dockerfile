@@ -10,14 +10,14 @@ FROM arm32v7/ubuntu:latest
 RUN apt-get update \
     && apt-get install -y mysql-server
 # Expose database for remote connections
-COPY control-point-init.sql /root/control-point-init.sql
+COPY db-init.sql /root/db-init.sql
 RUN sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf \
 # Create mysql directory
     && mkdir -p /var/run/mysqld \
     && chown mysql:mysql /var/run/mysqld \
 # Create SQL script for new user and database
     && service mysql start \
-    && mysql < /root/control-point-init.sql
+    && mysql < /root/db-init.sql
 
 EXPOSE 3306
 
